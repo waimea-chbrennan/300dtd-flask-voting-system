@@ -1,7 +1,6 @@
-title: Flask Project Template
-description: A starter Flask, Jinja and SQLite project
-author: Digital Technologies Dept.
+title: NZART Voting System
+description: A system for NZART to vote on its president and council members
+author: Connor Brennan
 
-# If development is true, guides will be shown
 development: true
-picotheme: azure
+picotheme: jade
