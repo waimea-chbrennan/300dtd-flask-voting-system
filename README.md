@@ -24,6 +24,9 @@ Project Evidence
 - [Review: Project Final Review](docs/evidence/system-review.md)
 
 
+All documentation is hosted on [Github Pages](https://waimea-chbrennan.github.io/300dtd-flask-voting-system/)
+
+
 ## Test Accounts
 
 The following user accounts have been created to demonstrate the features of the system:
