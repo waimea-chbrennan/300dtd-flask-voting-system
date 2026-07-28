@@ -1,10 +1,20 @@
 services:
   web:
     build: .
+    user: 1000:1000
     ports:
       - "5000:5000"
     volumes:
       - .:/app        # live-reloads code changes without rebuilding
     env_file:
       - .env          # picks up the existing .env file automatically
-    tty: true         # Enable colour output
+    tty: true
+  
+  
+  tailwind:
+    image: node:22-alpine
+    working_dir: /app
+    user: 1000:1000
+    volumes:
+      - .:/app
+    command: sh -c "npm install && npx @tailwindcss/cli -i ./app/static/css/styles.css -o ./app/static/css/output.css --watch=always"    

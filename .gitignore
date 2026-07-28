@@ -12,6 +12,13 @@ env/
 instance/
 .env
 
+
+# Tailwind
+app/static/css/output.css
+
+# Node
+node_modules/
+
 # Database
 # *.sqlite
 # *.db
