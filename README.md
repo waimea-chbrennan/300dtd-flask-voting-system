@@ -1,5 +1,7 @@
 # NZART Voting System
 
+By Connor Brennan
+
 ## Project Description
 
 This is an app that is a replacement for the New Zealand Association of Radio Transmitters current election system which is snail mail based which carries a significant cost to the organization.
@@ -25,7 +27,7 @@ Project Evidence
 - [Sprint 2: Database](docs/evidence/sprint-2-database.md)
 - [Sprint 3: MVP Development](docs/evidence/sprint-3-mvp.md)
 - [Sprint 4: Final System Development](docs/evidence/sprint-4-final.md)
-- [Review: Project Final Review](docs/evidence/system-review.md)roject Evidence
+- [Review: Project Final Review](docs/evidence/system-review.md)
 
 
 All documentation is hosted on [Github Pages](https://waimea-chbrennan.github.io/300dtd-flask-voting-system/)
@@ -35,17 +37,17 @@ All documentation is hosted on [Github Pages](https://waimea-chbrennan.github.io
 
 The following user accounts have been created to demonstrate the features of the system:
 
-Test User 1:
-- Username: xxxxx
-- Password: xxxxx
+NZART admin Debby Morgan:
+- Username: 00001234
+- Password: test
 
-Test User 2:
-- Username: xxxxx
-- Password: xxxxx
+Election Officer:
+- Username: 00004321
+- Password: test
 
-Test User 3:
-- Username: xxxxx
-- Password: xxxxx
+Abby Accent (candidate and user)
+- Username: 46223819
+- Password: password
 
 
 
