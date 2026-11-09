@@ -1,0 +1,27 @@
+{% for user in users %}
+<form action="/admin/users/update/?id={{user.user_id | urlencode}}" method="post" class="bg-slate-300 p-1 m-1 flex">
+    <a href="/admin/users/delete/?id={{user.user_id | urlencode}}"><i data-lucide="trash" class="bg-red-600"></i></a>
+
+    {% if user.votes_cast!=0 %}
+        <i data-lucide="file-check"  class="bg-green-500"></i>
+    {% else %}
+        <i data-lucide="file-x"  class="bg-gray-400"></i>
+    {% endif %}
+    
+    <p>{{user.user_id}} - {{user.name}} {{user.callsign}}</p>
+
+    {% if user.email_status=="sent" %}
+        <i data-lucide="mail-check"  class="bg-green-500"></i>
+    {% elif user.email_status=="sending" %}
+        <i data-lucide="mail-clock"  class="bg-gray-400"></i>
+    {% else %}
+        <i data-lucide="mail-x" class="bg-red-400"></i>
+    {% endif %}
+
+    <input type="text" name="email" id="email" inputmode="email" value="{{user.email}}" required class="bg-white">
+
+
+
+    <button class="bg-white rounded-md px-2 py-0.5"><p>Save & Resend</p></button>
+</form>
+{% endfor %}

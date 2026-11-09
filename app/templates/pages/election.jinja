@@ -1,0 +1,61 @@
+{#=====================================================
+  Election Info page
+=====================================================#}
+
+{% extends 'pages/_base.jinja' %}
+
+
+{% block content %}
+
+    <article>
+        <h2>Registered Elections</h2>
+
+        {# Form with election details #}
+        {% for election in elections %}
+            <section>
+                <form action="/officer/election/{{election.id}}" method="post">
+                
+                    <label for="name"><p>Election Name</p></label>
+                    <input type="text" name="name" id="name" required disabled value="{{election.name}}" class="bg-white">
+                
+                    <label for="modified"><p>Election Last Modified</p></label>
+                    <input type="datetime-local" name="modified" id="modified" required disabled value="{{election.sealed_dt}}" class="bg-white">
+                    
+                    <label for="open_dt"><p>Election Open Time</p></label>
+                    <input type="datetime-local" name="open_dt" id="open_dt" required value="{{election.open_dt}}" class="bg-white">
+
+                    <label for="close_dt"><p>Election Close Time</p></label>
+                    <input type="datetime-local" name="close_dt" id="close_dt" required value="{{election.close_dt}}" class="bg-white">
+
+                    <button>Save</button>
+                </form>
+            </section>
+        {% endfor %}
+
+        {% if not elections %}
+            <p>It appears you have no elections, <a href="/officer/election/create">create one?</a></p>
+        {% endif %}
+
+    </article>
+
+
+
+    <article>
+        <h2>Candidates</h2>
+
+        <p>There are currently {{candidates | length }} candidates for election.</p>
+        <a href="/officer/candidates"><p>Manage Candidates</p></a>
+
+    
+    </article>
+
+
+
+
+
+    {# Link to candidates #}
+
+
+
+{% endblock %}
+

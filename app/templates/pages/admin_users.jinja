@@ -1,0 +1,54 @@
+{#=====================================================
+  Users Administration page
+=====================================================#}
+
+{% extends 'pages/_base.jinja' %}
+
+
+{% block content %}
+
+    <section class="bg-slate-300 p-1 m-1 ">
+        <h2>Add new user:</h2>  
+        <form action="/admin/users/adduser" method="post" class="flex">
+            <label for="member_id"><p>NZART Member ID</p></label>
+            <input type="text" name="member_id" id="member_id" inputmode="numeric" required class="bg-white">
+
+            <label for="name"><p>Full Name</p></label>
+            <input type="text" name="name" id="name" required class="bg-white">
+
+            <label for="callsign"><p>Callsign</p></label>
+            <input type="text" name="callsign" id="callsign" required class="bg-white">
+
+            <label for="email"><p>Email</p></label>
+            <input type="text" name="email" id="email" inputmode="email" required class="bg-white">
+
+            <button class="bg-white rounded-md px-2 py-0.5 m-2"><p>Add</p></button>
+        
+        </form> 
+    </section>
+
+
+    <section>
+        <div>
+            <h2>Current Users:</h2>
+        </div>
+
+        <input class="form-control" type="search"
+            name="search" placeholder="Search Users..."
+            hx-post="/admin/users/search"
+            hx-trigger="input changed delay:500ms, keyup[key=='Enter'], load, every 10s"
+            hx-target="#search-results"
+            hx-swap="innerHTML"
+        >
+
+        <div id="search-results"></div>
+
+
+    </section>
+
+
+{% endblock %}
+
+{% block title %}
+    Users
+{% endblock %}

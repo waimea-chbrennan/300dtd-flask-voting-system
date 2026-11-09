@@ -9,10 +9,6 @@
   box-sizing: border-box;
 }
 
-/* 2. Remove default margin */
-*:not(dialog) {
-  margin: 0;
-}
 
 /* 3. Enable keyword animations */
 @media (prefers-reduced-motion: no-preference) {

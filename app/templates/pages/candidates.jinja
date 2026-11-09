@@ -1,0 +1,98 @@
+{#=====================================================
+  Managing and displaying candidates page
+=====================================================#}
+
+{% extends 'pages/_base.jinja' %}
+
+
+{% block content %}
+
+    <article>
+        <h2 class="text-2xl">Candidates</h2>
+        {% for candidate in candidates %}
+            <section class="m-5 p-4 border rounded">
+                <form action="/officer/candidates/update/{{candidate.user_id}}" method="post" enctype="multipart/form-data" class="flex flex-col gap-3 ">
+
+                    <h3 class="text-xl" >{{candidate.name}}</h3>
+
+                    <label for="description">Candidate Description</label>
+                    <textarea name="description" id="description" rows="5" class="w-full p-2 border">{{ candidate.description or '' }}</textarea>
+
+                    <label for="photo">Candidate Photo</label>
+                    <input type="file" name="photo" id="photo" accept="image/jpeg,image/png,image/webp" class="w-full p-2 border">
+
+                    {% if candidate.photo_path %}
+                        <img src="{{ url_for('static', filename=candidate.photo_path) }}" alt="Candidate Photo" class="w-40 h-auto">
+                    {% endif %}
+
+                    <label for="island">Island</label>
+                    <select name="island" id="island" class="w-full p-2 border">
+                        <option value="North" {% if candidate.island == 'North' %}selected{% endif %}>North Island</option>
+                        <option value="South" {% if candidate.island == 'South' %}selected{% endif %}>South Island</option>
+                    </select>
+
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" name="for_council" id="for_council" value="1" {% if candidate.for_council %}checked{% endif %}>
+                        <label for="for_council">Standing for Council</label>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" name="for_president" id="for_president" value="1" {% if candidate.for_president %}checked{% endif %}>
+                        <label for="for_president">Standing for President</label>
+                    </div>
+
+                    <button type="submit" class="p-2 border rounded">Save</button>
+                </form>
+            </section>
+        {% endfor %}
+    
+    </article>
+
+
+    <article>
+    <h2 class="text-2xl">Add New Candidate</h2>
+        <section class="m-5 p-4 border rounded">
+            <form action="/officer/candidates/new" method="post" enctype="multipart/form-data" class="flex flex-col gap-3">
+
+                <h3 class="text-xl">New Candidate</h3>
+
+                <label for="user_id">User ID (matching existing NZART member)</label>
+                <input type="number" name="user_id" id="user_id" required class="w-full p-2 border">
+
+                <label for="description">Candidate Description</label>
+                <textarea name="description" id="description" rows="5" class="w-full p-2 border"></textarea>
+
+                <label for="photo">Candidate Photo</label>
+                <input type="file" name="photo" id="photo" accept="image/jpeg,image/png,image/webp" class="w-full p-2 border">
+
+                <label for="island">Island</label>
+                <select name="island" id="island" class="w-full p-2 border">
+                    <option value="North">North Island</option>
+                    <option value="South">South Island</option>
+                </select>
+
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" name="for_council" id="for_council" value="1">
+                    <label for="for_council">Standing for Council</label>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" name="for_president" id="for_president" value="1">
+                    <label for="for_president">Standing for President</label>
+                </div>
+
+                <button type="submit" class="p-2 border rounded">Create Candidate</button>
+            </form>
+        </section>
+    
+    </article>
+
+
+
+
+
+
+
+
+{% endblock %}
+

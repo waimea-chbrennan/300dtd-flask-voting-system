@@ -1,7 +1,10 @@
 /*===========================================================
-  PROJECT NAME HERE
-  By YOUR NAME HERE
+  NZART Voting System
+  By Connor Brennan
 ===========================================================*/
+
+@import "tailwindcss";
+
 
 :root {
     --text-col:         #111;
@@ -31,9 +34,15 @@ body {
 
 
 main {
-    max-width: 60rem;
+    max-width: 90%;
     margin-inline: auto;
     padding: 1rem;
+}
+
+article {
+    background-color: var(--back-col-panel);
+    padding: 0.5rem;
+    margin: 0.5rem;
 }
 
 
