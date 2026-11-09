@@ -1,0 +1,51 @@
+{#=====================================================
+  Ballot Submission page
+=====================================================#}
+
+{% extends 'pages/_base.jinja' %}
+
+
+{% block content %}
+
+    <h2>Select Candidates</h2>
+    <p>Once you submit voting, you will not be able to change your vote.</p>
+
+    <form action="/voting/submit" method="post">
+
+    <section id="council" class="candidates">
+    <h3>Council Candidates</h3>
+      {% for candidate in candidates if candidate.for_council %}
+        <article>
+          <h4>{{candidate.name}}</h4>
+          <p>{{candidate.description}}</p>
+          <img src="{{candidate.photo_path}}" alt="photo of {{candidate.name}}">
+          <input type="radio" name="council" value="{{candidate.user_id}}" required>
+        </article>
+
+      {% endfor %}
+
+    </section>
+
+
+    <section id="presidential" class="candidates">
+    <h3>Presidential Candidates</h3>
+      {% for candidate in candidates if candidate.for_president %}
+        <article>
+          <h4>{{candidate.name}}</h4>
+          <p>{{candidate.description}}</p>
+          <img src="{{candidate.photo_path}}" alt="photo of {{candidate.name}}">
+          <input type="radio" name="presidential" value="{{candidate.user_id}}" required>
+        </article>
+
+      {% endfor %}
+
+    </section>
+
+
+
+    <button>Confirm</button>
+
+    </form>
+
+{% endblock %}
+

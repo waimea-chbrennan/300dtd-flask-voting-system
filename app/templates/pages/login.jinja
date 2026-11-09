@@ -1,0 +1,32 @@
+{#=====================================================
+  Login page
+=====================================================#}
+
+{% extends 'pages/_base.jinja' %}
+
+
+{% block content %}
+
+    <section id="login">
+
+        <h2>Login</h2>   
+        <p>Check your NZART email address for your sign in credentials.</p>
+
+        <form method="post" action="/login">
+            <label>
+                Username
+                <input name="member_id" type="number" inputmode="numeric" required>
+            </label>
+
+            <label>
+                Password
+                <input name="password" type="password" required>
+            </label>
+
+            <button>Login</button>
+    </form>
+
+    </section>
+
+{% endblock %}
+

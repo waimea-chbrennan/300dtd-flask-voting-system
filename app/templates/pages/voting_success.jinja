@@ -1,0 +1,22 @@
+{#=====================================================
+  Voting success page
+=====================================================#}
+
+{% extends 'pages/_base.jinja' %}
+
+
+{% block content %}
+
+    <section id="success">
+
+        <h2>Your vote has been successfully submitted.</h2>   
+        <p>You may now logout.</p>
+        <a href="/logout"><button>Logout</button></a>
+        
+    </section>
+
+{% endblock %}
+
+{% block title %}
+    Success
+{% endblock %}

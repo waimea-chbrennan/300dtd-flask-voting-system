@@ -11,28 +11,47 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>Notes Demo {% block title %}{% endblock %}</title>
+	<title>NZART Voting {% block title %}{% endblock %}</title>
 
-    <link rel="icon" href="/static/images/note.svg">
+    <link rel="icon" href="/static/images/icon.png">
 
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
     <script src="/static/js/utils.js"></script>
+    <script src="/static/js/htmx.js"></script>
 
     <link rel="stylesheet" href="/static/css/reset.css">
     <link rel="stylesheet" href="/static/css/messages.css">
-    <link rel="stylesheet" href="/static/css/styles.css">
+    {# <link rel="stylesheet" href="/static/css/styles.css"> #}
+    <link rel="stylesheet" href="/static/css/output.css">
+    
 </head>
 
 <body>
 
     <header>
         <a href="/">
-            Notes Demo
+            NZART Voting
         </a>
-
         <nav>
-            <a href="/">All Notes</a>
-            <a href="/">Link</a>
-            <a href="/">Link</a>
+        {% if session.logged_in %}
+            {% if session.user.role=="admin" %}
+                <a href="/admin/users">Administrate Users</a>
+            {% endif %}
+            {% if session.user.role=="officer" %}
+                <a href="/officer/election">Admin Election</a>
+            {% endif %}
+
+            <p>{{session.user.name}} {{session.user.callsign}}</p>
+        
+        
+        
+        <a href="/logout">Logout</a>
+        
+        {% else %}
+        <a href="/login">Login</a>
+        {% endif%}
+
         </nav>
     </header>
 
@@ -47,6 +66,14 @@
     </main>
 
 </body>
+
+<script>
+    lucide.createIcons();
+
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        lucide.createIcons();
+    });
+</script>
 
 </html>
 

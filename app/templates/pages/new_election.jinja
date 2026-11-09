@@ -1,0 +1,34 @@
+{#=====================================================
+  New Election page
+=====================================================#}
+
+{% extends 'pages/_base.jinja' %}
+
+
+{% block content %}
+
+    <article>
+        <h2>New Election</h2>
+
+        {# Form with election details #}
+            <section>
+                <form action="/officer/election/create" method="post">
+                
+                    <label for="name"><p>Election Name</p></label>
+                    <input type="text" name="name" id="name" required class="bg-white">
+                
+                    <label for="open_dt"><p>Election Open Time</p></label>
+                    <input type="datetime-local" name="open_dt" id="open_dt" required class="bg-white">
+
+                    <label for="close_dt"><p>Election Close Time</p></label>
+                    <input type="datetime-local" name="close_dt" id="close_dt" required class="bg-white">
+
+                    <button>Create</button>
+                </form>
+            </section>
+
+
+    </article>
+
+{% endblock %}
+

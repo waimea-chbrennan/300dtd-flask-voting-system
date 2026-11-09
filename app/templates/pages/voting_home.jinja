@@ -1,0 +1,33 @@
+{#=====================================================
+  Overview page
+=====================================================#}
+
+{% extends 'pages/_base.jinja' %}
+
+
+{% block content %}
+
+    <section id="login">
+
+        <h2>Begin Voting</h2>
+
+        <form action="/voting/select" method="get">
+            <p>Select the island your primary residence is in.</p>
+            <label>
+                North
+                <input type="radio" id="north" value="north" name="island" required>
+            </label>
+            <label>
+                South
+                <input type="radio" id="south" value="south" name="island">
+            </label>
+            <label>
+                Other
+                <input type="radio" id="other" value="other" name="island">
+            </label>            
+            <button>Confirm and Begin</button>
+        </form>
+    </section>
+
+{% endblock %}
+
