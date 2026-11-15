@@ -179,14 +179,17 @@ def update_resend_user():
     id = request.args.get("id").strip().lower()
     new_email = request.form.get("email").strip().lower()
 
+    # Get the rest of the user info to construct new email
+
     with connect_db() as db:
-        sql = """UPDATE users
-            SET email=?
-            WHERE user_id=?
-        """
-        params = (new_email, id,)
-        db.execute(sql, params)
-        
+        sql = "SELECT user_id, name, callsign FROM users WHERE user_id=?"
+        params = (id,)
+        user = db.execute(sql, params).fetchone()
+
+    update_provision_account(id, user["name"], user["callsign"], new_email, "user")
+    
+    
+
     return redirect("/admin/users")
 
 
@@ -377,10 +380,6 @@ def show_results_page():
 #=====================================================================
 # Ballot submission 
 #=====================================================================
-# @login_required
-# @app.get("/voting")
-# def show_voting_home():
-    # return render_template("pages/voting_home.jinja")
 
 @login_required
 @app.get("/voting/select")
@@ -485,13 +484,6 @@ def submit_ballot():
 # User Adding
 #=====================================================================
 
-@app.get("/addusertest")
-def add_user_test():
-    provision_account(88888888, "Firsty Last", "ZL3FL", "reddogrun.cb@gmail.com", "user")
-    return redirect("/")
-
-
-
 @app.post("/admin/users/adduser")
 def add_standard_user():
     member_id = request.form.get("member_id")
@@ -499,14 +491,14 @@ def add_standard_user():
     callsign = request.form.get("callsign")
     email = request.form.get("email")
 
-    provision_account(member_id, name, callsign, email, "user")
+    update_provision_account(member_id, name, callsign, email, "user")
 
     ## Get a user readable error message returned eg user already exists
 
     flash(f"User Added", "info")
     return redirect("/admin/users")
 
-def provision_account(user_id, name, callsign, email, role):
+def update_provision_account(user_id, name, callsign, email, role):
 
     plain_pw = "".join(choice(ascii_letters + digits + "!@#$%^&*()") for _ in range(16))
 
@@ -568,18 +560,26 @@ def provision_account(user_id, name, callsign, email, role):
         plain_pw=plain_pw, login_url=login_url,
     )
     
-    print(f"sending onboarding to {email}")
-    print(f"TEMPORARY PW------------------------------------------------- {plain_pw}")
 
     thread = Thread(target=send_provision_email_async, args=(body, html_body, email, user_id))
     thread.start()
 
-    with connect_db() as db:
-        sql = "INSERT INTO users (user_id, name, callsign, email, pw_hash, role) VALUES (?,?,?,?,?,?)"
-        params = [user_id, name, callsign, email, hashed_pw, role]
-        db.execute(sql,params)
+    # If the user account already exists then we merely need to update the pw hash
 
-    print("added new user")
+    with connect_db() as db:
+        sql = "SELECT user_id FROM users WHERE user_id=?"
+        params = (user_id,)
+        user = db.execute(sql, params).fetchone()
+        if user:
+            print("updating existing user")
+            sql = "UPDATE users SET email=?, pw_hash=? WHERE user_id=?"
+            params = (email, hashed_pw, user_id,)
+        else:
+            print("User does not exist, creating")
+            sql = "INSERT INTO users (user_id, name, callsign, email, pw_hash, role) VALUES (?,?,?,?,?,?)"
+            params = [user_id, name, callsign, email, hashed_pw, role]
+        
+        db.execute(sql,params)
 
 
 
@@ -598,7 +598,7 @@ def send_provision_email_async(body, html, recipient_email, user_id):
             msg = EmailMessage() 
 
             msg["From"] = formataddr((getenv("SMTP_NAME"), getenv("SMTP_EMAIL")))
-            msg["To"] = recipient
+            msg["To"] = recipient_email
             msg["Subject"] = "NZART Elections Open 2027"
             msg.set_content(body)
             msg.add_alternative(html, subtype="html")
@@ -607,27 +607,24 @@ def send_provision_email_async(body, html, recipient_email, user_id):
             server.login(getenv("SMTP_EMAIL"), getenv("SMTP_KEY"))
             result = server.send_message(msg)
 
+            sql = """UPDATE users
+                        SET email_status=?
+                        WHERE user_id=?
+                    """
             if result:
-                with connect_db() as db:
-                    sql = """UPDATE users
-                        SET email_status=?
-                        WHERE user_id=?
-                    """
-                    params = ("sent", user_id,)
-                    db.execute(sql, params)
-                # Add email pending to user
+                # Add error and log  
+                params = ("error", user_id,)
             else:
-                # Add error and log
-                with connect_db() as db:
-                    sql = """UPDATE users
-                        SET email_status=?
-                        WHERE user_id=?
-                    """
-                    params = ("error", user_id,)
-                    db.execute(sql, params)
+                params = ("sent", user_id,)
+                    
+            with connect_db() as db:
+                db.execute(sql, params)
+
+
+            
 
     except Exception as e:
-        print(f"SMTP ERROR SENDING EMAIL TO {recipient}: {e}")
+        print(f"SMTP ERROR SENDING EMAIL TO {recipient_email}: {e}")
         # Log e into the log db 
         with connect_db() as db:
             sql = """UPDATE users
