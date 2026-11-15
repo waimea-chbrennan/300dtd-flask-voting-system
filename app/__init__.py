@@ -16,6 +16,12 @@ from secrets import choice
 from time import sleep
 from threading import Thread
 
+# Image functionality
+from uuid import uuid4
+from PIL import Image
+from pathlib import Path
+
+
 # SMTP functionality
 from smtplib            import SMTP
 from dotenv import load_dotenv
@@ -315,16 +321,32 @@ def show_election_candidates():
     return render_template("pages/candidates.jinja", candidates=candidates)
 
 
+
+# Helper function for uploaded photo, compresses and saves
+def save_candidate_photo(photo):
+    filename = f"{uuid4().hex}.webp"
+    path = Path(app.static_folder) / "images" / "candidates"
+
+    with Image.open(photo.stream) as img:
+        img = img.convert("RGB")
+        img.thumbnail((800, 800))
+        img.save(path / filename, "WEBP", quality=60)
+
+    return f"/static/images/candidates/{filename}"
+
+
+
+
 @officer_required
 @app.post("/officer/candidates/new")
 def add_new_candidate():
     description = request.form.get("description")
-    photo_path = request.form.get("photo_path")
     island = request.form.get("island")
-    for_council = request.form.get("for_council")
-    for_president = request.form.get("for_president")
-    user_id = request.form.get("user_id")
+    for_council = int(request.form.get("for_council", 0))
+    for_president = int(request.form.get("for_president", 0))
+    user_id = request.form.get("user_id", type=int)
 
+    photo_path = save_candidate_photo(request.files.get("photo"))
 
     with connect_db() as db:
         sql = """
@@ -341,23 +363,26 @@ def add_new_candidate():
 
 
 @officer_required
-@app.post("/officer/candidates/update")
-def edit_candidate_info():
+@app.post("/officer/candidates/update/<int:user_id>")
+def edit_candidate_info(user_id):
     description = request.form.get("description")
-    photo_path = request.form.get("photo_path")
     island = request.form.get("island")
-    for_council = request.form.get("for_council")
-    for_president = request.form.get("for_president")
-    user_id = request.form.get("user_id")
-
+    for_council = int(request.form.get("for_council", 0)) #damn html checkboxes need default when unchecked
+    for_president = int(request.form.get("for_president", 0))
 
     with connect_db() as db:
-        sql = """ UPDATE candidate_info
-            SET description=?, photo_path=?, island=?, for_council=?, for_president=?
+
+        photo_path = save_candidate_photo(request.files.get("photo"))
+
+        sql = """
+            UPDATE candidate_info
+            SET description=?, photo_path=?, island=?,
+                for_council=?, for_president=?
             WHERE user_id=?
         """
         params = (description, photo_path, island, for_council, for_president, user_id,)
-        result = db.execute(sql, params)
+
+        db.execute(sql, params)
 
     flash("Candidate details updated", "info")
     return redirect("/officer/candidates")
@@ -580,7 +605,6 @@ def update_provision_account(user_id, name, callsign, email, role):
             params = [user_id, name, callsign, email, hashed_pw, role]
         
         db.execute(sql,params)
-
 
 
 def send_provision_email_async(body, html, recipient_email, user_id):

@@ -22,7 +22,7 @@
                     <input type="file" name="photo" id="photo" accept="image/jpeg,image/png,image/webp" class="w-full p-2 border">
 
                     {% if candidate.photo_path %}
-                        <img src="{{ url_for('static', filename=candidate.photo_path) }}" alt="Candidate Photo" class="w-40 h-auto">
+                        <img src="{{candidate.photo_path}}" alt="Candidate Photo" class="w-40 h-auto">
                     {% endif %}
 
                     <label for="island">Island</label>
