@@ -32,15 +32,23 @@ Replace this text with notes regarding the DB design.
 
 ### Required Data Input
 
-Replace this text with a description of what data will be input, and where / how it will be obtained.
+The user data will have to be input by the election officer consisting of all the NZART financial members at the time of election. This will consist of name, callsign and email address.
+
+Candidate info will have to be entered on nomination.
+
 
 ### Required Data Output
 
-Replace this text with a description of the outputs for the system - what types of data will be displayed?
+The system will display the member's name when they log in and will display to the election nominees/officer the results of the election.
+It will fetch candidate info to be displayed.
 
 ### Required Data Processing
 
 Replace this text with a description of how the data will be processed to achieve the desired output(s) - any processes / formulae?
+
+Most candidate and user data is stored in the clear as it has to be displayed but passwords must be salted and hashed according to best practices.
+
+The ballots are interesting as they have to be homomorphically encrypted by the clients on submission to ensure ballot integrity and secrecy. I will use the Microsoft SEAL homomorphic encryption for the ballots using the BFV scheme which allows for exact operations on integers which is what we want for tallying the votes. I plan to use the tenseal library for the backend and the node-seal library for the client-side operations.
 
 
 ## UI 'Flow'
@@ -64,9 +72,20 @@ Replace this text with notes any improvements you made as a result of the testin
 
 ## Initial UI Prototype
 
+Next stage is to find colors for the site:
+
+### Starting with the already established NZART colours
+https://www.realtimecolors.com/?colors=050315-fbfbfe-ae1f1a-000000-ae1f1a&fonts=Roboto%20Slab-roboto
+
+### Moving to a slightly more colorful pallete:
+https://www.realtimecolors.com/?colors=050315-fbfbfe-ae1f1a-beb8ad-a7b09a&fonts=Roboto%20Slab-Roboto
+
+
 The next stage of prototyping was to develop the layout for each screen of the UI.
 
 This Figma demo shows the initial layout design for the UI:
+
+
 
 *FIGMA PROTOTYPE - PLACE THE FIGMA EMBED CODE HERE - MAKE SURE IT IS SET SO THAT EVERYONE CAN ACCESS IT*
 

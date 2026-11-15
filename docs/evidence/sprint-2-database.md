@@ -79,6 +79,14 @@ The NZART admin secretary needs to be able input the member list, edit and resen
 
 ### Editing user email and resending
 
+![Send Email Fail](screenshots/email_sent_fail.png)
+
+When the email is resent, it sends with the hashed pw as follows which is no good for the user to log in. This is because the only 'password' the system has is the one from the database which is hashed.
+
+### Changes / Improvements
+
+To resolve this, I had to refactor the password generation and email sending functions to add an update query to add the hash of a newly generated pw to the database when the new email is sent:
+
 ![Editing user Barry Blizzard email](screenshots/edit_resend_email.gif)
 
 ![Send Email](screenshots/email_sent.png)
@@ -88,25 +96,17 @@ The NZART admin secretary needs to be able input the member list, edit and resen
 
 ![Deleting unwanted/malformed user](screenshots/deleting_user_demo.gif)
 
+The user was deleted successfully when the admin pressed the delete button.
 
-### Changes / Improvements
 
-Replace this text with notes any improvements you made as a result of the testing.
-
-**PLACE SCREENSHOTS AND/OR ANIMATED GIFS OF THE IMPROVED SYSTEM HERE**
 
 
 ## Testing Submitting Voting Ballots
 
 Replace this text with notes about what you are testing, how you tested it, and the outcome of the testing
 
-**PLACE SCREENSHOTS AND/OR ANIMATED GIFS OF THE TESTING HERE**
+![Submitting ballot test](screenshots/submit_ballot.gif)
 
-### Changes / Improvements
-
-Replace this text with notes any improvements you made as a result of the testing.
-
-**PLACE SCREENSHOTS AND/OR ANIMATED GIFS OF THE IMPROVED SYSTEM HERE**
 
 
 
@@ -118,26 +118,15 @@ Replace this text with notes about what you are testing, how you tested it, and 
 
 **PLACE SCREENSHOTS AND/OR ANIMATED GIFS OF THE TESTING HERE**
 
-### Changes / Improvements
 
-Replace this text with notes any improvements you made as a result of the testing.
 
-**PLACE SCREENSHOTS AND/OR ANIMATED GIFS OF THE IMPROVED SYSTEM HERE**
 
 
 ## Testing Candidates
 
-Replace this text with notes about what you are testing, how you tested it, and the outcome of the testing
+Election officer editing candidate details, uploading a new photo and checking results updates
 
-**PLACE SCREENSHOTS AND/OR ANIMATED GIFS OF THE TESTING HERE**
-
-### Changes / Improvements
-
-Replace this text with notes any improvements you made as a result of the testing.
-
-**PLACE SCREENSHOTS AND/OR ANIMATED GIFS OF THE IMPROVED SYSTEM HERE**
-
-
+![Election officer editing candidate and checking result](screenshots/edit_all_candidate_details_evidence.gif)
 
 
 
@@ -165,5 +154,4 @@ Fix: fixing this paradigm to be more conventional by passing the id through the 
 
 ## Sprint Review
 
-Replace this text with a statement about how the sprint has moved the project forward - key success point, any things that didn't go so well, etc.
-
+The voting system has now got key functionality and is usable with the council especially liking the ease and simplicity of adding new users and administrating the election. However, they comment that at this point the styling needs to be resolved or else facing turning the vast majority of the members away from using the system.
